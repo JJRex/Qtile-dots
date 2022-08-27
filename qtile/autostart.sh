@@ -1,8 +1,8 @@
 #!/bin/sh
+xrandr --output HDMI-0 --primary
 nitrogen --restore &
-wal -R -n &
-picom --config ~/.config/qtile/picom/picom.conf &
 volumeicon &
 flameshot &
-emacs --daemon &
-lxpolkit &
+xfce4-session &
+picom --config ~/.config/qtile/picom/picom.conf &
+wal -R -n

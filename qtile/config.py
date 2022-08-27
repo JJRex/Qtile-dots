@@ -28,11 +28,14 @@ from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-import os
-import subprocess
-from libqtile import hook
+
 mod = "mod4"
 terminal = "kitty"
+
+import os
+import subprocess
+
+from libqtile import hook
 
 @hook.subscribe.startup_once
 def autostart():
@@ -78,17 +81,13 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Spawn a command using a prompt widget"),
-    #Added
-    Key([mod, "shift"], "e", lazy.spawn("emacsclient -c -a 'emacs'"), desc="Spawns emacs"),
-    Key([mod],"f", lazy.spawn("firefox"), desc="spawn Firefox")
 ]
-
 
 groups = []
 
 group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
 
-group_labels = ["", "", "", "", "", "", "", "", "", "",]
+group_labels = ["", "", "", "", "", "", "", "", "", "",]
 
 group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "treetab", "floating",]
 
@@ -117,35 +116,36 @@ for i in groups:
     ])
 
 
+'''
+groups = [Group(i) for i in "123456789"]
 
-#groups = [Group(i) for i in "123456789"]
-
-#for i in groups:
-#    keys.extend(
-#        [
-#            # mod1 + letter of group = switch to group
-#            Key(
-#                [mod],
-#                i.name,
-#                lazy.group[i.name].toscreen(),
-#                desc="Switch to group {}".format(i.name),
-#            ),
-#            # mod1 + shift + letter of group = switch to & move focused window to group
-#            Key(
-#                [mod, "shift"],
-#                i.name,
-#                lazy.window.togroup(i.name, switch_group=True),
-#                desc="Switch to & move focused window to group {}".format(i.name),
-#            ),
-#            # Or, use below if you prefer not to switch to that group.
-#            # # mod1 + shift + letter of group = move focused window to group
-#            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-#            #     desc="move focused window to group {}".format(i.name)),
-#        ]
-#    )
+for i in groups:
+    keys.extend(
+        [
+            # mod1 + letter of group = switch to group
+            Key(
+                [mod],
+                i.name,
+                lazy.group[i.name].toscreen(),
+                desc="Switch to group {}".format(i.name),
+            ),
+            # mod1 + shift + letter of group = switch to & move focused window to group
+            Key(
+                [mod, "shift"],
+                i.name,
+                lazy.window.togroup(i.name, switch_group=True),
+                desc="Switch to & move focused window to group {}".format(i.name),
+            ),
+            # Or, use below if you prefer not to switch to that group.
+            # # mod1 + shift + letter of group = move focused window to group
+            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+            #     desc="move focused window to group {}".format(i.name)),
+        ]
+    )
+'''
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=0, margin=5),
+    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=0, margin=8),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -171,12 +171,19 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(scale=0.7),
-                widget.Spacer(),
-                widget.GroupBox(highlight_method="text",
-                                this_current_screen_border='ace0d2',
-                                fontsize=20
+                widget.TextBox(
+                    "",
+                    fontsize=40,
+                    padding=10,
+                    mouse_callbacks = {'Button1': lazy.spawn("clearine")}
                 ),
+                #widget.CurrentLayout(),
+                widget.Spacer(),
+                widget.GroupBox(
+                    highlight_method="text",
+                    this_current_screen_border='9a3436',
+                    fontsize=20,
+                    ),
                 widget.Spacer(),
                 #widget.Prompt(),
                 #widget.WindowName(),
@@ -188,22 +195,13 @@ screens = [
                 #),
                 #widget.TextBox("default config", name="default"),
                 #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
                 widget.Systray(),
                 widget.Clock(format="%I:%M %p"),
-                #widget.QuickExit(fontsize=40, padding=10, default_text='', countdown_format='{}'),
-                widget.TextBox(
-                    "",
-                    fontsize=40,
-                    padding=10,
-                    mouse_callbacks = {'Button1': lazy.spawn("clearine")}
-                ),
-
+                #widget.QuickExit(),
             ],
-            28,
-            background='1b2426',
-            margin=[5, 15, 0, 15],
+            30,
+            margin=[8,8,0,8],
+            background='070c15',
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
