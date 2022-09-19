@@ -1,5 +1,5 @@
 #!/bin/sh
-xrandr --output HDMI-0 --primary
+# xrandr --output HDMI-0 --primary
 nitrogen --restore &
 volumeicon &
 flameshot &
